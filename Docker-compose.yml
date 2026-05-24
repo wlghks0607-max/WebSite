@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:9.4
+    environment:
+      - POSTGRES_PASSWORD=1234
+  lotto:
+    build: .
+    image: lotto_web
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/usr/src/Website/
+    links:
+      - db
+  
