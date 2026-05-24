@@ -1,0 +1,46 @@
+{% extends 'lotto/base.html' %}
+{% block content %}
+<h2>🎟 복권 구매</h2>
+
+{% if not open_gachas %}
+    <p>현재 구매 가능한 회차가 없습니다.</p>
+{% else %}
+<form method="post">
+    {% csrf_token %}
+
+    <label>회차 선택:</label>
+    <select name="gacha_id">
+        {% for g in open_gachas %}
+            <option value="{{ g.id }}">{{ g }}</option>
+        {% endfor %}
+    </select>
+    <br><br>
+
+    <label>구매 방식:</label><br>
+    <input type="radio" name="mode" value="auto" id="auto" checked>
+    <label for="auto">🎲 자동</label>
+    &nbsp;
+    <input type="radio" name="mode" value="manual" id="manual">
+    <label for="manual">✏️ 수동</label>
+
+    <div id="manual_inputs" style="display:none; margin-top:10px;">
+        <p>1~45 사이 숫자 6개 입력:</p>
+        {% for i in "123456" %}
+            <input type="number" name="n{{ i }}" min="1" max="45" style="width:55px;">
+        {% endfor %}
+    </div>
+
+    <br><br>
+    <button type="submit" class="btn">구매하기</button>
+</form>
+
+<script>
+    document.querySelectorAll('input[name="mode"]').forEach(el => {
+        el.addEventListener('change', function() {
+            document.getElementById('manual_inputs').style.display =
+                this.value === 'manual' ? 'block' : 'none';
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}

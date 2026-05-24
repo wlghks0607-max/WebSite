@@ -1,0 +1,37 @@
+{% extends 'lotto/base.html' %}
+{% block content %}
+<h2>📋 당첨 확인</h2>
+
+{% if not tickets %}
+    <p>구매한 티켓이 없습니다.</p>
+{% else %}
+<table>
+    <thead>
+        <tr>
+            <th>회차</th>
+            <th>번호</th>
+            <th>방식</th>
+            <th>결과</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for ticket in tickets %}
+        <tr>
+            <td>{{ ticket.draw.id }}회차</td>
+            <td>{{ ticket.nums }}</td>
+            <td>{{ ticket.is_auto|yesno:"자동,수동" }}</td>
+            <td>
+                {% if ticket.rank == None %}
+                    ⏳ 추첨 전
+                {% elif ticket.rank == 0 %}
+                    ❌ 낙첨
+                {% else %}
+                    🏆 {{ ticket.rank }}등
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}
