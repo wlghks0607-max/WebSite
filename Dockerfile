@@ -1,7 +1,5 @@
-FROM ubuntu
+FROM python:3.10
 
-RUN apt-get update
-RUN apt-get install python
 RUN pip install django
 
 WORKDIR /usr/src/Website/
